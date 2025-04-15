@@ -2,15 +2,41 @@
 <script>
 /*global nn*/
 
-const GIF = "weenie.gif"
+const GIF = "15.gif"
 const COLOR = "aliceblue"
-function setup(){
-    
-    
-    
-    
-    
+
+async function createGif(x, y){
+  const gif = await nn.loadImage(GIF)
+  nn.create('img')
+    .set({ src: `${GIF}#${Math.random()}` })
+    .css({
+      position: 'absolute',
+      left: x - gif.width / 2,
+      top: y - gif.height / 2,
+      
+  })
+    .addTo('body')
+  
+}
+  
+async function setup(){
+  nn.get('body').css({backgroundColor: COLOR}) 
+  const gif = await nn.loadImage(GIF)
+  
+  const colSize = gif.width / 2
+  const numCols = nn.width / colSize
+  const rowSize = gif.height / 2
+  const numRows = nn.height / rowSize
+  
+  for (let i = 0; i < numRows; i++) {
+    for (let j = 0; j < numCols; j++) {
+      const x = i * gif.width / 2
+      const y = j * gif.height / 2 
+      createGif(x, y)
+    }
   }
+
+}
 nn.on('load', setup)
 
 
